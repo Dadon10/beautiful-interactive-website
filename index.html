@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Nova — Beautiful Interactive Website</title>
+  <meta name="description" content="A modern, interactive single‑file website template with smooth animations, dark mode, and useful UI components." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0b0f15;
+      --panel: #111827;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --brand: #6ee7b7; /* mint */
+      --brand-2: #60a5fa; /* blue */
+      --accent: #f472b6; /* pink */
+      --ring: rgba(110, 231, 183, .35);
+      --shadow: 0 10px 25px rgba(0,0,0,.35);
+      --radius: 18px;
+      --maxw: 1200px;
+      --grid-gap: clamp(16px, 2vw, 28px);
+    }
+    :root.light {
+      --bg: #f8fafc;
+      --panel: #ffffff;
+      --text: #0f172a;
+      --muted: #334155;
+      --brand: #10b981;
+      --brand-2: #2563eb;
+      --accent: #db2777;
+      --ring: rgba(37, 99, 235, .25);
+      --shadow: 0 10px 25px rgba(2, 6, 23, .08);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      background: radial-gradient(1200px 800px at 80% -10%, rgba(96,165,250,.15), transparent 60%),
+                  radial-gradient(900px 600px at -10% 20%, rgba(244,114,182,.12), transparent 55%),
+                  linear-gradient(180deg, rgba(110,231,183,.07), transparent 20%), var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      scroll-behavior: smooth;
+    }
+
+    /* Utility */
+    .container { width: min(100% - 32px, var(--maxw)); margin-inline: auto; }
+    .grid { display: grid; gap: var(--grid-gap); }
+    .btn {
+      display: inline-flex; align-items: center; gap: .5rem;
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      color: #0b1120; font-weight: 700; padding: .9rem 1.2rem; border-radius: 999px; border: none; cursor: pointer;
+      box-shadow: 0 8px 20px rgba(99, 102, 241,.25), inset 0 0 0 1px rgba(255,255,255,.15);
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 14px 28px rgba(99, 102, 241,.33); }
+    .btn.ghost { background: transparent; color: var(--text); border: 1px solid rgba(148,163,184,.25); }
+    .tag { padding: .35rem .7rem; border-radius: 999px; font-weight: 600; font-size: .75rem; background: rgba(110,231,183,.15); color: var(--brand);
+      border: 1px solid rgba(110,231,183,.35); backdrop-filter: blur(6px); }
+
+    /* Header */
+    header {
+      position: sticky; top: 0; z-index: 50;
+      backdrop-filter: saturate(180%) blur(14px);
+      background: color-mix(in oklab, var(--bg) 70%, transparent);
+      border-bottom: 1px solid rgba(148, 163, 184, .12);
+    }
+    .nav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: .7rem 0;
+    }
+    .brand { display:flex; align-items:center; gap:.7rem; font-weight:800; letter-spacing:.3px; }
+    .brand-logo {
+      width: 36px; height: 36px; border-radius: 12px;
+      background: conic-gradient(from 210deg at 50% 50%, var(--brand), var(--brand-2), var(--accent), var(--brand));
+      box-shadow: 0 6px 18px rgba(37,99,235,.35), inset 0 0 18px rgba(255,255,255,.18);
+    }
+    nav ul { display: flex; gap: 1rem; list-style: none; padding: 0; margin: 0; }
+    nav a { text-decoration: none; color: var(--text); font-weight: 600; opacity: .85; }
+    nav a:hover { opacity: 1; }
+    .right-actions { display: flex; gap: .6rem; align-items: center; }
+    .theme-toggle { width: 44px; height: 44px; border-radius: 50%; border:1px solid rgba(148,163,184,.25); background: var(--panel); cursor: pointer; display:grid; place-content:center; box-shadow: var(--shadow); }
+    .menu-btn { display:none; }
+
+    /* Hero */
+    .hero { padding: 6rem 0 4rem; position: relative; overflow: clip; }
+    .hero .wrap { display: grid; gap: 2rem; grid-template-columns: 1.1fr .9fr; align-items: center; }
+    .eyebrow { display:flex; align-items:center; gap:.6rem; margin-bottom: .8rem; }
+    h1 { font-size: clamp(2.2rem, 3.8vw + 1rem, 4.2rem); line-height: 1.05; margin: 0 0 1rem; }
+    .lead { font-size: clamp(1rem, .55vw + .9rem, 1.15rem); color: var(--muted); max-width: 62ch; }
+    .cta { display:flex; gap: .8rem; margin-top: 1.4rem; flex-wrap: wrap; }
+    .hero-visual {
+      aspect-ratio: 4/3; border-radius: var(--radius);
+      background: radial-gradient(60% 60% at 70% 30%, rgba(96,165,250,.25), transparent),
+                  radial-gradient(60% 60% at 20% 70%, rgba(244,114,182,.2), transparent), var(--panel);
+      border: 1px solid rgba(148,163,184,.12);
+      box-shadow: var(--shadow);
+      position: relative; overflow: hidden;
+    }
+    .orb { position:absolute; filter: blur(20px); opacity:.6; border-radius:50%; mix-blend-mode: screen; }
+    .orb.one { width: 180px; height: 180px; left: -40px; top: -30px; background: radial-gradient(circle at 30% 30%, var(--brand), transparent 60%); animation: float 9s ease-in-out infinite; }
+    .orb.two { width: 220px; height: 220px; right: -50px; bottom: -60px; background: radial-gradient(circle at 60% 60%, var(--accent), transparent 60%); animation: float 11s ease-in-out infinite reverse; }
+    @keyframes float { 50% { transform: translateY(-10px) translateX(6px); } }
+
+    /* Feature cards */
+    .features { padding: 3rem 0; }
+    .cards { grid-template-columns: repeat(3, 1fr); }
+    .card { background: linear-gradient(180deg, rgba(148,163,184,.06), transparent 60%), var(--panel); border:1px solid rgba(148,163,184,.12); border-radius: var(--radius); padding: 1.4rem; box-shadow: var(--shadow); position: relative; overflow: hidden; }
+    .card h3 { margin: .2rem 0 .2rem; }
+    .card p { color: var(--muted); font-size: .95rem; }
+    .card:hover { transform: translateY(-4px); transition: transform .18s ease; }
+    .icon { width: 42px; height: 42px; border-radius: 12px; display:grid; place-content:center; font-weight:900; background: linear-gradient(135deg, var(--brand), var(--brand-2)); color:#0b1120; box-shadow: inset 0 0 0 1px rgba(255,255,255,.25); }
+
+    /* Gallery */
+    .gallery { padding: 3rem 0; }
+    .filters { display:flex; flex-wrap: wrap; gap:.6rem; margin-bottom: 1rem; }
+    .filters button { border:1px solid rgba(148,163,184,.25); background: var(--panel); padding:.5rem .9rem; border-radius: 999px; color: var(--text); cursor:pointer; }
+    .filters button.active { border-color: var(--brand); box-shadow: 0 0 0 4px var(--ring); }
+    .grid.gallery-grid { grid-template-columns: repeat(4, 1fr); }
+    .tile { aspect-ratio: 4/3; border-radius: 14px; overflow: hidden; position: relative; border:1px solid rgba(148,163,184,.15); box-shadow: var(--shadow); }
+    .tile img { width: 100%; height: 100%; object-fit: cover; display:block; filter: saturate(1.15) contrast(1.05); transition: transform .4s ease; }
+    .tile:hover img { transform: scale(1.05); }
+    .badge { position:absolute; left:10px; top:10px; }
+
+    /* Testimonials slider */
+    .testimonials { padding: 3rem 0; }
+    .slider { position: relative; overflow: hidden; border-radius: var(--radius); border:1px solid rgba(148,163,184,.15); background: var(--panel); box-shadow: var(--shadow); }
+    .slides { display: flex; transition: transform .6s ease; }
+    .slide { min-width: 100%; padding: 2rem; display:grid; gap:.6rem; }
+    .slide .author { color: var(--muted); font-weight: 600; }
+    .slider-controls { display:flex; justify-content: space-between; padding: .6rem; }
+    .dotbar { display:flex; gap:.4rem; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(148,163,184,.35); }
+    .dot.active { background: linear-gradient(135deg, var(--brand), var(--brand-2)); }
+
+    /* Pricing */
+    .pricing { padding: 3rem 0; }
+    .plans { grid-template-columns: repeat(3, 1fr); }
+    .plan { background: var(--panel); border:1px solid rgba(148,163,184,.15); border-radius: var(--radius); padding: 1.6rem; box-shadow: var(--shadow); position:relative; }
+    .plan.popular { outline: 2px solid var(--brand-2); }
+    .price { font-size: 2.2rem; font-weight: 800; }
+    .plan ul { margin: 0; padding-left: 1.1rem; color: var(--muted); }
+
+    /* FAQ */
+    .faq { padding: 3rem 0; }
+    details { background: var(--panel); border:1px solid rgba(148,163,184,.15); border-radius: 12px; padding: 1rem 1.1rem; box-shadow: var(--shadow); }
+    details + details { margin-top: .8rem; }
+    summary { cursor: pointer; font-weight: 700; }
+
+    /* Contact */
+    .contact { padding: 3rem 0 5rem; }
+    form { display:grid; gap:.9rem; background: var(--panel); border:1px solid rgba(148,163,184,.15); padding: 1.2rem; border-radius: var(--radius); box-shadow: var(--shadow); }
+    input, textarea { width: 100%; padding: .85rem 1rem; border-radius: 12px; border:1px solid rgba(148,163,184,.25); background: color-mix(in oklab, var(--panel) 86%, black 14%); color: var(--text); }
+    input:focus, textarea:focus { outline: none; box-shadow: 0 0 0 4px var(--ring); border-color: var(--brand); }
+    .twocol { grid-template-columns: 1fr 1fr; }
+    .error { color: #ef4444; font-size: .9rem; }
+    .success { color: #22c55e; font-weight: 700; }
+
+    /* Footer */
+    footer { border-top: 1px solid rgba(148,163,184,.12); padding: 2rem 0; color: var(--muted); display:flex; align-items:center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+
+    /* Back to top */
+    .totop { position: fixed; right: 18px; bottom: 18px; width: 46px; height: 46px; border-radius: 50%; border:1px solid rgba(148,163,184,.25); background: var(--panel); display:none; place-content:center; cursor:pointer; box-shadow: var(--shadow); }
+
+    /* Reveal on scroll */
+    .reveal { opacity: 0; transform: translateY(14px); transition: opacity .6s ease, transform .6s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* Responsive */
+    @media (max-width: 960px) {
+      .hero .wrap { grid-template-columns: 1fr; }
+      .cards { grid-template-columns: 1fr 1fr; }
+      .grid.gallery-grid { grid-template-columns: 1fr 1fr; }
+      .plans { grid-template-columns: 1fr; }
+      .twocol { grid-template-columns: 1fr; }
+      nav ul { display:none; position:absolute; right:16px; top:64px; background: var(--panel); border: 1px solid rgba(148,163,184,.15); padding: .8rem; border-radius: 12px; box-shadow: var(--shadow); }
+      nav ul.show { display:flex; flex-direction: column; }
+      .menu-btn { display:inline-grid; place-content:center; width: 44px; height: 44px; border-radius: 50%; border:1px solid rgba(148,163,184,.25); background: var(--panel); }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="container nav">
+      <div class="brand">
+        <div class="brand-logo" aria-hidden="true"></div>
+        <span>Nova</span>
+      </div>
+      <nav>
+        <ul id="navLinks">
+          <li><a href="#home">Home</a></li>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#gallery">Gallery</a></li>
+          <li><a href="#pricing">Pricing</a></li>
+          <li><a href="#faq">FAQ</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+      <div class="right-actions">
+        <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme">🌙</button>
+        <button id="menuBtn" class="menu-btn" aria-label="Toggle menu">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero -->
+    <section id="home" class="hero container">
+      <div class="wrap">
+        <div>
+          <div class="eyebrow"><span class="tag">New</span> <span class="muted">Nova v1.0 just dropped</span></div>
+          <h1 class="reveal">Design. Launch. Wow ✨</h1>
+          <p class="lead reveal" style="transition-delay:.1s">A beautiful, interactive template you can customize in minutes. Smooth animations, dark mode, and no frameworks needed.</p>
+          <div class="cta reveal" style="transition-delay:.2s">
+            <a class="btn" href="#pricing">Get Started</a>
+            <a class="btn ghost" href="#features">See Features</a>
+          </div>
+        </div>
+        <div class="hero-visual reveal" style="transition-delay:.15s">
+          <div class="orb one"></div>
+          <div class="orb two"></div>
+          <!-- Decorative grid -->
+          <svg viewBox="0 0 600 400" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+            <defs>
+              <linearGradient id="g1" x1="0" x2="1">
+                <stop offset="0%" stop-color="var(--brand)" stop-opacity=".6" />
+                <stop offset="100%" stop-color="var(--brand-2)" stop-opacity=".6" />
+              </linearGradient>
+            </defs>
+            <g fill="none" stroke="url(#g1)" stroke-opacity=".35">
+              <!-- grid lines -->
+              <script type="application/ecmascript"><![CDATA[
+                // Dynamic grid will be drawn by JS (no external runtime here)
+              ]]></script>
+            </g>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features -->
+    <section id="features" class="features container">
+      <h2 class="reveal">Everything you need to ship fast</h2>
+      <div class="grid cards">
+        <article class="card reveal" style="transition-delay:.05s">
+          <div class="icon">⚡</div>
+          <h3>Blazing fast</h3>
+          <p>No frameworks. Pure HTML/CSS/JS for top performance and instant load times.</p>
+        </article>
+        <article class="card reveal" style="transition-delay:.1s">
+          <div class="icon">🌗</div>
+          <h3>Dark & Light</h3>
+          <p>Delight users with a classy dark theme and smart system‑aware defaults.</p>
+        </article>
+        <article class="card reveal" style="transition-delay:.15s">
+          <div class="icon">🎯</div>
+          <h3>Interactive</h3>
+          <p>Sliders, filters, accordions, counters, scroll reveals, and more built‑in.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- Gallery with filters -->
+    <section id="gallery" class="gallery container">
+      <div class="filters">
+        <button class="active" data-filter="all">All</button>
+        <button data-filter="ui">UI</button>
+        <button data-filter="brand">Brand</button>
+        <button data-filter="photo">Photo</button>
+      </div>
+      <div class="grid gallery-grid">
+        <!-- Use picsum placeholders; replace with your images -->
+        <figure class="tile reveal" data-cat="ui"><span class="badge tag">UI</span><img src="https://picsum.photos/seed/u1/800/600" alt="UI tile 1"></figure>
+        <figure class="tile reveal" data-cat="brand"><span class="badge tag">Brand</span><img src="https://picsum.photos/seed/b1/800/600" alt="Brand tile 1"></figure>
+        <figure class="tile reveal" data-cat="photo"><span class="badge tag">Photo</span><img src="https://picsum.photos/seed/p1/800/600" alt="Photo tile 1"></figure>
+        <figure class="tile reveal" data-cat="ui"><span class="badge tag">UI</span><img src="https://picsum.photos/seed/u2/800/600" alt="UI tile 2"></figure>
+        <figure class="tile reveal" data-cat="brand"><span class="badge tag">Brand</span><img src="https://picsum.photos/seed/b2/800/600" alt="Brand tile 2"></figure>
+        <figure class="tile reveal" data-cat="photo"><span class="badge tag">Photo</span><img src="https://picsum.photos/seed/p2/800/600" alt="Photo tile 2"></figure>
+        <figure class="tile reveal" data-cat="ui"><span class="badge tag">UI</span><img src="https://picsum.photos/seed/u3/800/600" alt="UI tile 3"></figure>
+        <figure class="tile reveal" data-cat="brand"><span class="badge tag">Brand</span><img src="https://picsum.photos/seed/b3/800/600" alt="Brand tile 3"></figure>
+      </div>
+    </section>
+
+    <!-- Testimonials slider -->
+    <section class="testimonials container">
+      <h2 class="reveal">Loved by makers</h2>
+      <div class="slider reveal" aria-roledescription="carousel">
+        <div class="slides" id="slides">
+          <div class="slide">
+            <p>“I launched a landing page in an afternoon. The animations feel premium and the code is so clean.”</p>
+            <div class="author">— Lina, Indie Dev</div>
+          </div>
+          <div class="slide">
+            <p>“The dark mode alone convinced my users to stay longer. Zero dependencies, huge win.”</p>
+            <div class="author">— Marco, Product Designer</div>
+          </div>
+          <div class="slide">
+            <p>“Exactly what I needed for quick client demos. The gallery filters are *chef's kiss*.”</p>
+            <div class="author">— Aisha, Freelancer</div>
+          </div>
+        </div>
+        <div class="slider-controls">
+          <button id="prev" class="btn ghost" aria-label="Previous">‹</button>
+          <div class="dotbar" id="dotbar"></div>
+          <button id="next" class="btn" aria-label="Next">›</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pricing -->
+    <section id="pricing" class="pricing container">
+      <h2 class="reveal">Simple, transparent pricing</h2>
+      <div class="grid plans">
+        <div class="plan reveal" style="transition-delay:.05s">
+          <div class="tag">Starter</div>
+          <div class="price">$0</div>
+          <p>For experiments and quick ideas.</p>
+          <ul>
+            <li>1 project</li>
+            <li>Basic components</li>
+            <li>Email support</li>
+          </ul>
+          <p><a class="btn" href="#contact">Try Free</a></p>
+        </div>
+        <div class="plan popular reveal" style="transition-delay:.1s">
+          <div class="tag">Pro</div>
+          <div class="price">$29</div>
+          <p>For serious builders.</p>
+          <ul>
+            <li>Unlimited projects</li>
+            <li>All components</li>
+            <li>Priority support</li>
+          </ul>
+          <p><a class="btn" href="#contact">Go Pro</a></p>
+        </div>
+        <div class="plan reveal" style="transition-delay:.15s">
+          <div class="tag">Team</div>
+          <div class="price">$79</div>
+          <p>For growing teams.</p>
+          <ul>
+            <li>Everything in Pro</li>
+            <li>Team libraries</li>
+            <li>SSO & permissions</li>
+          </ul>
+          <p><a class="btn" href="#contact">Contact Sales</a></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="faq container">
+      <h2 class="reveal">Frequently asked questions</h2>
+      <details class="reveal"><summary>Can I use this commercially?</summary><p>Yes. Customize freely and use for your projects or clients.</p></details>
+      <details class="reveal"><summary>Is this really framework‑free?</summary><p>Absolutely. No build tools or npm required—just edit and ship.</p></details>
+      <details class="reveal"><summary>How do I change colors and fonts?</summary><p>Edit the CSS variables in <code>:root</code> and the Google Font link.</p></details>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="contact container">
+      <h2 class="reveal">Say hello</h2>
+      <form id="contactForm" class="grid twocol reveal" novalidate>
+        <div>
+          <label for="name">Name</label>
+          <input id="name" name="name" placeholder="Your name" required />
+        </div>
+        <div>
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" placeholder="name@example.com" required />
+        </div>
+        <div style="grid-column: 1 / -1;">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" rows="4" placeholder="How can we help?" required></textarea>
+        </div>
+        <div id="formMsg" class="error" style="grid-column:1/-1"></div>
+        <div style="grid-column: 1 / -1; display:flex; gap:.8rem; align-items:center;">
+          <button class="btn" type="submit">Send message</button>
+          <span id="status" class="success" aria-live="polite"></span>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <footer class="container">
+    <div>© <span id="year"></span> Nova. All rights reserved.</div>
+    <div style="display:flex; gap:.6rem; align-items:center;">
+      <span>Made with ❤ — <span id="counter" title="visits">0</span> visits</span>
+      <a class="btn ghost" href="#home">Back to top</a>
+    </div>
+  </footer>
+
+  <button class="totop" id="totop" aria-label="Back to top">↑</button>
+
+  <script>
+    // ===== Theme toggle with localStorage =====
+    const root = document.documentElement;
+    const themeToggle = document.getElementById('themeToggle');
+    const saved = localStorage.getItem('theme');
+    if (saved === 'light') root.classList.add('light');
+    themeToggle.textContent = root.classList.contains('light') ? '☀️' : '🌙';
+    themeToggle.addEventListener('click', () => {
+      root.classList.toggle('light');
+      const mode = root.classList.contains('light') ? 'light' : 'dark';
+      localStorage.setItem('theme', mode);
+      themeToggle.textContent = mode === 'light' ? '☀️' : '🌙';
+    });
+
+    // ===== Mobile menu =====
+    const menuBtn = document.getElementById('menuBtn');
+    const navLinks = document.getElementById('navLinks');
+    menuBtn.addEventListener('click', () => navLinks.classList.toggle('show'));
+    navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('show')));
+
+    // ===== Reveal on scroll =====
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { rootMargin: '0px 0px -10% 0px', threshold: .1 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // ===== Gallery filters =====
+    const filterButtons = document.querySelectorAll('.filters button');
+    const tiles = document.querySelectorAll('.tile');
+    filterButtons.forEach(btn => btn.addEventListener('click', () => {
+      filterButtons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const f = btn.dataset.filter;
+      tiles.forEach(t => {
+        const show = f === 'all' || t.dataset.cat === f;
+        t.style.display = show ? 'block' : 'none';
+      });
+    }));
+
+    // ===== Testimonials slider =====
+    const slides = document.getElementById('slides');
+    const total = slides.children.length;
+    const dotbar = document.getElementById('dotbar');
+    let index = 0; let timer;
+
+    const updateDots = () => {
+      [...dotbar.children].forEach((d,i)=>d.classList.toggle('active', i===index));
+    };
+    const go = (i) => {
+      index = (i + total) % total;
+      slides.style.transform = `translateX(-${index * 100}%)`;
+      updateDots();
+    };
+    for (let i=0;i<total;i++){ const d=document.createElement('div'); d.className='dot'; d.addEventListener('click',()=>go(i)); dotbar.appendChild(d);} updateDots();
+    document.getElementById('prev').onclick = () => { go(index-1); reset(); };
+    document.getElementById('next').onclick = () => { go(index+1); reset(); };
+    const play = () => timer = setInterval(() => go(index+1), 4500);
+    const reset = () => { clearInterval(timer); play(); };
+    play();
+
+    // ===== Contact form (client-side validation demo) =====
+    const form = document.getElementById('contactForm');
+    const msg = document.getElementById('formMsg');
+    const statusEl = document.getElementById('status');
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      msg.textContent = '';
+
+      const data = Object.fromEntries(new FormData(form));
+      if (!data.name || !data.email || !data.message) { msg.textContent = 'Please fill in all fields.'; return; }
+      const emailOK = /.+@.+\..+/.test(data.email);
+      if (!emailOK) { msg.textContent = 'Enter a valid email address.'; return; }
+
+      // Fake async submit
+      statusEl.textContent = 'Sending…';
+      setTimeout(()=>{ statusEl.textContent = 'Thanks! We will reply soon.'; form.reset(); }, 700);
+    });
+
+    // ===== Back to top button =====
+    const totop = document.getElementById('totop');
+    window.addEventListener('scroll', () => {
+      totop.style.display = window.scrollY > 600 ? 'grid' : 'none';
+    });
+    totop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+    // ===== Footer year & simple visit counter =====
+    document.getElementById('year').textContent = new Date().getFullYear();
+    const hits = +(localStorage.getItem('visits')||0) + 1; localStorage.setItem('visits', hits);
+    document.getElementById('counter').textContent = hits.toLocaleString();
+  </script>
+</body>
+</html>

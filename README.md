@@ -53,6 +53,6 @@ Since this is a **single-file project**, all HTML, CSS, and JS are included in o
 
 ---
 
-👨‍💻 **Created by:** Kennedy Malama (with assistance from ChatGPT)
+👨‍💻Created by:Kennedy Malama
 
 ---
